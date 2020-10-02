@@ -1,0 +1,26 @@
+$primary: #3c0703;
+$white : #fff;
+$primary-light : rgba(253, 91, 59, 0.25);
+$dark: rgba(0, 0, 0, 0.24);
+$primary-backgroud: #945c58;
+$primary-light-backgroud: #e0d9d8;
+
+@mixin breakpoint($point: desktop) {
+    @if $point == desktop-xxl {
+      @media only screen and (min-width: 90em) {
+        @content;
+      }
+    }
+  
+    @else if $point == desktop-l {
+      @media only screen and (min-width: 78em) {
+        @content;
+      }
+    }
+  
+    @else {
+      @media only screen and (min-width: 48em) {
+        @content;
+      }
+    }
+  }
