@@ -44,11 +44,12 @@
 </template>
 
 <script>
+import {DEFAULT_PAGE_LIMIT, DEFAULT_PAGE_NUMBER, MAXIMUM_PAGES} from '../../service/constants'
 export default {
   data() {
     return {
-      pageNumber: Number(this.$route.query.pageNumber) || 1,
-      limit: Number(this.$route.query.limit) || 30,
+      pageNumber: Number(this.$route.query.pageNumber) || DEFAULT_PAGE_NUMBER,
+      limit: Number(this.$route.query.limit) || DEFAULT_PAGE_LIMIT,
     };
   },
   props: {
@@ -66,18 +67,18 @@ export default {
     startIndex() {
       if (this.$route.query.pageNumber) {
         const { pageNumber } = this.$route.query;
-        if(pageNumber%5 === 0){
-            return pageNumber-5;
+        if(pageNumber%MAXIMUM_PAGES === 0){
+            return pageNumber-MAXIMUM_PAGES;
         }
-        return Math.floor(Number(pageNumber) / 5) * 5;
+        return Math.floor(Number(pageNumber) / MAXIMUM_PAGES) * MAXIMUM_PAGES;
       }
       return 0;
     },
     endIndex() {
       if (this.$route.query.pageNumber) {
-        return this.startIndex + 5;
+        return this.startIndex + MAXIMUM_PAGES;
       }
-      return 5;
+      return MAXIMUM_PAGES;
     },
   },
   methods: {
@@ -87,16 +88,16 @@ export default {
       this.changePageNumber(this.pageNumber);
     },
     onPrevButtonClick() {
-      this.pageNumber = this.pageNumber - 5;
-      this.startIndex = this.startIndex - 5;
-      this.endIndex = this.endIndex - 5;
+      this.pageNumber = this.pageNumber - MAXIMUM_PAGES;
+      this.startIndex = this.startIndex - MAXIMUM_PAGES;
+      this.endIndex = this.endIndex - MAXIMUM_PAGES;
       this.$emit("pagination-click", this.pageNumber, this.limit);
       this.changePageNumber(this.pageNumber);
     },
     onNextButtonClick() {
-      this.pageNumber = this.startIndex + 6;
-      this.startIndex = this.startIndex + 5;
-      this.endIndex = this.endIndex + 5;
+      this.pageNumber = this.startIndex + MAXIMUM_PAGES+1;
+      this.startIndex = this.startIndex + MAXIMUM_PAGES;
+      this.endIndex = this.endIndex + MAXIMUM_PAGES;
 
       this.$emit("pagination-click", this.pageNumber, this.limit);
       this.changePageNumber(this.pageNumber);
@@ -134,7 +135,11 @@ export default {
 <style lang="scss" scoped>
 .pagination-row {
   text-align: center;
-  padding: 1em;
+  padding: 0.25rem;
+
+  @include breakpoint {
+    padding: 1em;
+  }
 }
 
 h4{
@@ -148,11 +153,15 @@ h4{
   margin: 2px;
   border-radius: 30px;
   font-size: 1em;
-  padding: 0.75rem 1.5rem;
+  padding: 0.25rem 0.5rem;
   background-color: $primary;
   border: 1px solid $primary;
    color: $white;
   cursor: pointer;
+
+  @include breakpoint {
+    padding: 0.75rem 1.5rem;
+  }
 
   &.active {
     background-color: $primary-backgroud;

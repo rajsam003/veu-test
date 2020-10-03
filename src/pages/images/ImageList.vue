@@ -6,7 +6,7 @@
     <Pagination
       @pagination-click="onPaginationClick"
       @page-reload="loadImages"
-      :totalItems="993"
+      :totalItems="totalItems"
     >
       <ImageFilter :authorName="authorName" @set-search="setSearch" />
       <div v-if="isLoading">
@@ -32,7 +32,8 @@
 <script>
 import ImageItem from "@/components/images/ImageItem.vue";
 import ImageFilter from "@/components/images/ImageFilter.vue";
-import Pagination from "../../components/pagination/Pagination.vue";
+import Pagination from "@/components/pagination/Pagination.vue";
+import {TOTAL_ITEMS, DEFAULT_PAGE_LIMIT} from "../../service/constants";
 
 export default {
   components: {
@@ -45,6 +46,7 @@ export default {
       authorName: "",
       isLoading: false,
       error: null,
+      totalItems : TOTAL_ITEMS
     };
   },
   computed: {
@@ -68,7 +70,7 @@ export default {
       if(limit){
         this.loadImages(pageNumber, limit);
       }else{
-        this.loadImages(pageNumber, "30");
+        this.loadImages(pageNumber, DEFAULT_PAGE_LIMIT);
       }
     } else {
       this.loadImages();

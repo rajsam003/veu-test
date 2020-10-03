@@ -36,8 +36,12 @@ export default {
 <style lang="scss" scoped>
 div {
   width: 100%;
-  padding: 1em 5em;
+  padding: 1em 0;
   box-sizing: border-box;
+
+  @include breakpoint {
+    padding: 1em 5em;
+  }
 }
 
 input {
